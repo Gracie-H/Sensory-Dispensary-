@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sensory Dispensary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --abyss:#0a1220; --frost:#e3ebf3; --mist:#8ea3bb; --agar:#c6e7dc;
+  --down:#9cc0ea; --up:#f0c08f; --warn:#ffb88f;
+  --steel1:#2a3442;
+  --serif:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --sans:"Manrope","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--sans); color:var(--frost); background:#0b111b; min-height:100vh; overflow-x:hidden}
+button{font:inherit; color:inherit; cursor:pointer}
+:focus-visible{outline:2px solid var(--agar); outline-offset:3px}
+.page{min-height:100vh; display:none; align-items:center; justify-content:center; padding:40px 16px}
+.page.on{display:flex; animation:fade .7s ease both}
+@keyframes fade{from{opacity:0}}
+
+/* intro */
+.intro{width:min(1040px,100%); display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); gap:clamp(32px,6vw,88px); align-items:center}
+.intro .date{margin:0 0 14px; font-family:var(--serif); font-style:italic; font-size:20px; color:var(--mist)}
+.intro h1{margin:0 0 28px; font-family:var(--serif); font-weight:400; font-size:clamp(44px,6.4vw,84px); line-height:.98; letter-spacing:-.01em}
+.intro p{margin:0 0 14px; font-size:17px; line-height:1.65; color:#c7d3df; max-width:46ch}
+.enter{margin-top:20px; border:0; border-radius:999px; padding:13px 28px; background:var(--frost); color:var(--abyss); font-weight:700}
+.live{border-left:1px solid rgba(227,235,243,.18); padding-left:clamp(24px,4vw,48px)}
+.live .k{font-size:13px; color:var(--mist); display:flex; align-items:center; gap:8px}
+.live .k i{width:8px; height:8px; border-radius:50%; background:var(--warn); animation:blinkdot 1.6s ease-in-out infinite}
+@keyframes blinkdot{50%{opacity:.25}}
+.live .big{font-family:var(--mono); font-weight:600; font-size:clamp(72px,11vw,132px); line-height:1; margin:10px 0 16px; color:var(--warn); text-shadow:0 0 30px rgba(255,184,143,.35); font-variant-numeric:tabular-nums}
+.live .bars{height:18px; max-width:320px}
+.live .note{margin-top:16px; font-size:14px; color:var(--mist); line-height:1.5}
+.live .note b{color:var(--frost); font-weight:600}
+@media (max-width:820px){
+  .intro{grid-template-columns:1fr}
+  .live{border-left:0; padding-left:0; border-top:1px solid rgba(227,235,243,.18); padding-top:28px}
+}
+
+/* machine */
+.machine{position:relative; width:min(760px,100%); border-radius:16px 16px 6px 6px; padding:14px;
+  background:linear-gradient(90deg,#1b2330,var(--steel1) 12%,var(--steel1) 88%,#1b2330);
+  box-shadow:0 40px 60px -30px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.12)}
+.machine::after{content:""; position:absolute; left:14px; right:14px; bottom:-14px; height:14px; background:#10151d; border-radius:0 0 4px 4px}
+.header{height:58px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(rgba(240,246,250,.97),rgba(198,231,220,.85)); color:#1b2c40; box-shadow:0 0 40px rgba(198,231,220,.5);
+  font-family:var(--serif); font-size:26px}
+.body{display:grid; grid-template-columns:minmax(0,1fr) 190px; gap:14px; margin-top:14px}
+.glass{position:relative; border-radius:8px; padding:14px 14px 6px; background:var(--abyss); border:6px solid #3a4655; box-shadow:inset 0 0 40px rgba(0,0,0,.8)}
+.glass::after{content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(115deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,0) 30%,rgba(255,255,255,0) 62%,rgba(255,255,255,.06) 70%,rgba(255,255,255,0) 78%)}
+.rowhead{font-size:12.5px; color:var(--mist); margin:0 2px 8px; display:flex; align-items:center; gap:7px}
+.rowhead i{width:7px; height:7px; border-radius:50%}
+.rowhead.down i{background:var(--down)} .rowhead.up i{background:var(--up)}
+.shelf{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-bottom:12px}
+.cell{padding:0; border:0; background:none; text-align:left; display:block}
+.window{position:relative; aspect-ratio:4/5; border-radius:4px; overflow:hidden; background:#14294a}
+.window img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .4s ease}
+.cell:hover .window img,.cell:focus-visible .window img{transform:scale(1.06)}
+.coil{height:10px; margin:5px 6% 0; border-radius:4px; background:repeating-linear-gradient(110deg,#8c96a3 0 2px,transparent 2px 7px)}
+.tag{margin-top:5px; display:flex; justify-content:space-between; gap:4px; background:#d7dde3; color:#16202c; border-radius:2px; padding:2px 6px; font-size:11.5px; font-weight:600; font-variant-numeric:tabular-nums}
+.name{margin-top:4px; font-size:11.5px; line-height:1.25; min-height:2.5em}
+.cell.empty .window{background:repeating-linear-gradient(135deg,#0f1828 0 10px,#0b1220 10px 20px)}
+.cell.empty .tag{background:#59616b; color:#d7dde3}
+.cell.empty .name{font-family:var(--serif); font-style:italic; font-size:14px; color:var(--mist)}
+
+.panel{display:flex; flex-direction:column; gap:10px}
+.meter{border-radius:6px; border:5px solid #3a4655; background:#071512; padding:10px}
+.meter .lbl{display:flex; justify-content:space-between; font-size:11.5px; color:#9fb9ad}
+.meter .num{font-family:var(--mono); font-size:30px; font-weight:600; color:#a6f2c0; text-shadow:0 0 8px rgba(166,242,192,.4); margin:2px 0 6px; transition:color .4s}
+.meter .num.hot{color:var(--warn); text-shadow:0 0 8px rgba(255,184,143,.45)}
+.bars{display:grid; grid-template-columns:repeat(20,1fr); gap:2px; height:14px}
+.bars i{border-radius:1px; background:#173027; transition:background .4s}
+.bars i.on{background:#a6f2c0} .bars i.on.hot{background:var(--warn)}
+.meter .sur{margin-top:8px; font-family:var(--mono); font-size:12px; color:#cfe9da}
+.screen{min-height:86px; border-radius:6px; border:5px solid #3a4655; background:#071512; color:#a6f2c0; padding:10px; font-family:var(--mono); font-size:12px; line-height:1.5;
+  box-shadow:inset 0 0 18px rgba(0,0,0,.8)}
+.card{display:flex; align-items:center; gap:10px; border:2px dashed #5d6a79; border-radius:8px; padding:9px 10px; color:#aab4bf; font-size:12px}
+.card.on{border-color:var(--agar); color:var(--frost); animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{50%{border-color:#fff}}
+.card svg{flex:0 0 26px}
+.sticker{font-size:11px; color:#16202c; background:var(--agar); border-radius:6px; padding:8px 10px; line-height:1.4}
+.door{margin-top:14px; height:62px; border-radius:6px; background:linear-gradient(#0a0e14,#1d2532); box-shadow:inset 0 8px 16px rgba(0,0,0,.75);
+  display:flex; align-items:center; justify-content:center; color:#6b7685; font-size:12.5px; border:0; width:100%}
+.door.lit{color:var(--frost); box-shadow:inset 0 8px 16px rgba(0,0,0,.75),0 0 0 2px var(--agar)}
+
+/* overlays */
+.veil{position:fixed; inset:0; background:rgba(5,9,16,.74); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); opacity:0; pointer-events:none; transition:opacity .3s; z-index:10}
+.veil.open{opacity:1; pointer-events:auto}
+.detail{position:fixed; z-index:11; left:50%; top:50%; width:min(820px,calc(100% - 32px)); max-height:calc(100vh - 32px); overflow:auto;
+  transform:translate(-50%,-46%) scale(.98); opacity:0; pointer-events:none; transition:transform .4s cubic-bezier(.2,.7,.1,1),opacity .3s;
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:32px; align-items:center;
+  background:linear-gradient(160deg,#1b3150,#0e1a2d); border:1px solid rgba(227,235,243,.18); border-radius:24px; padding:28px; box-shadow:0 40px 100px -30px rgba(0,0,0,.9)}
+.detail.open{opacity:1; pointer-events:auto; transform:translate(-50%,-50%) scale(1)}
+.hero{position:relative; aspect-ratio:4/5; border-radius:12px; overflow:hidden; background:#14294a}
+.hero img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.info .dir{font-size:13px; color:var(--mist); display:flex; align-items:center; gap:7px}
+.info .dir i{width:7px; height:7px; border-radius:50%}
+.info h2{margin:6px 0 10px; font-family:var(--serif); font-weight:400; font-size:clamp(30px,4vw,44px); line-height:1.02}
+.info .what{margin:0 0 16px; font-size:16px; line-height:1.55; max-width:34ch}
+.info .mat{font-size:13.5px; color:var(--mist)}
+.price{margin-top:18px; font-variant-numeric:tabular-nums}
+.price small{display:block; font-size:12px; color:var(--mist); margin-top:3px}
+.row{display:flex; gap:12px; margin-top:16px; flex-wrap:wrap}
+.buy{margin-top:18px; width:100%; display:flex; justify-content:space-between; align-items:center; gap:12px; border:0; border-radius:18px;
+  padding:18px 24px; background:linear-gradient(135deg,#e9fff6,#9fe0c8); color:var(--abyss); font-size:20px; font-weight:700;
+  box-shadow:0 0 0 1px rgba(255,255,255,.4) inset, 0 12px 40px -8px rgba(166,242,192,.55); transition:transform .15s ease, box-shadow .2s ease}
+.buy:hover{transform:translateY(-2px); box-shadow:0 0 0 1px rgba(255,255,255,.5) inset, 0 18px 50px -8px rgba(166,242,192,.75)}
+.buy:active{transform:translateY(1px)}
+.buy b{font-family:var(--mono); font-size:22px; font-variant-numeric:tabular-nums}
+.pr.up{animation:pup .8s ease}
+.pr.down{animation:pdown .8s ease}
+@keyframes pup{0%{color:#c2410c; background:#ffe1cf}100%{}}
+@keyframes pdown{0%{color:#15803d; background:#d6f5e3}100%{}}
+.btn{border:0; border-radius:999px; padding:11px 22px; background:var(--frost); color:var(--abyss); font-weight:700}
+.btn.ghost{background:transparent; color:var(--frost); border:1px solid rgba(227,235,243,.35)}
+.close{position:absolute; top:12px; right:14px; width:36px; height:36px; border-radius:50%; border:1px solid rgba(227,235,243,.25); background:transparent; font-size:18px; line-height:1; z-index:2}
+
+.slip{position:fixed; z-index:11; left:50%; top:50%; transform:translate(-50%,-50%); width:min(340px,calc(100% - 32px)); max-height:calc(100vh - 32px); overflow:auto;
+  display:none; flex-direction:column; align-items:center; gap:14px}
+.slip.open{display:flex}
+.receipt{width:100%; background:#fbfaf5; color:#16181b; font-family:var(--mono); font-size:12px; line-height:1.5; padding:18px 16px 24px;
+  -webkit-mask:linear-gradient(#000 0 0) top/100% calc(100% - 8px) no-repeat,conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/12px 8px repeat-x;
+          mask:linear-gradient(#000 0 0) top/100% calc(100% - 8px) no-repeat,conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/12px 8px repeat-x;
+  animation:print 2.8s steps(28) both}
+@keyframes print{from{clip-path:inset(0 0 100% 0)} to{clip-path:inset(0 0 0 0)}}
+.receipt .c{text-align:center}
+.receipt .t{font-family:var(--serif); font-size:20px; text-align:center; margin-bottom:2px}
+.receipt hr{border:0; border-top:1px dashed #888; margin:9px 0}
+.receipt .r{display:flex; justify-content:space-between; gap:8px}
+.receipt .b{font-weight:600}
+.receipt .meterline{display:grid; grid-template-columns:repeat(10,1fr); gap:3px; margin:4px 0 6px}
+.receipt .meterline i{height:9px; border:1px solid #16181b}
+.receipt .meterline i.f{background:#16181b}
+.receipt .q{font-family:var(--serif); font-style:italic; font-size:17px; line-height:1.35; text-align:center; margin:10px 0 6px}
+.receipt .blank{border-bottom:1px solid #16181b; height:20px}
+.barcode{height:34px; margin:12px 0 4px; background:repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 3px,#111 3px 4px,transparent 4px 7px,#111 7px 10px,transparent 10px 11px,#111 11px 12px,transparent 12px 15px)}
+
+@media (max-width:760px){
+  .body{grid-template-columns:1fr}
+  .panel{display:grid; grid-template-columns:1fr 1fr; align-items:start}
+  .meter,.screen,.sticker{grid-column:1 / -1}
+}
+@media (max-width:520px){
+  .shelf{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .detail{grid-template-columns:1fr; gap:18px; top:auto; bottom:0; left:0; width:100%; max-height:92vh; border-radius:22px 22px 0 0; transform:translateY(30px); padding:22px}
+  .detail.open{transform:translateY(0)}
+  .hero{width:min(240px,66%); margin:6px auto 0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important}}
+</style>
+</head>
+<body>
+
+<section class="page on" id="introPage">
+  <div class="intro">
+    <div>
+      <p class="date">New York, 2029</p>
+      <h1>Sensory Dispensary</h1>
+      <p>The city is louder, brighter and more crowded than ever. Sensory overload is now measured in real time, like air quality.</p>
+      <p>Relief is sold where it is needed most: at a machine on your platform. Seven wearables, grown from living materials. One row turns the city down. The other turns it back up.</p>
+      <button class="enter" id="enter">Approach the machine</button>
+    </div>
+    <div class="live" aria-live="off">
+      <div class="k"><i></i>Sensory overload, live</div>
+      <div class="big" id="bigNum">87%</div>
+      <div class="bars" id="bigBars"></div>
+      <p class="note">Machine prices are adjusted to this level. <b id="bigSur">+35%</b> right now.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="machinePage">
+  <div class="machine" aria-label="Sensory Dispensary vending machine">
+    <div class="header">Sensory Dispensary</div>
+    <div class="body">
+      <div>
+        <div class="glass">
+          <div class="rowhead down"><i></i>Turn it down</div>
+          <div class="shelf" id="rowA"></div>
+          <div class="rowhead up"><i></i>Turn it up</div>
+          <div class="shelf" id="rowB"></div>
+        </div>
+        <button class="door" id="door" disabled>Push</button>
+      </div>
+      <div class="panel">
+        <div class="meter" aria-live="off">
+          <div class="lbl"><span>Sensory overload</span><span>live</span></div>
+          <div class="num" id="num">87%</div>
+          <div class="bars" id="bars"></div>
+          <div class="sur" id="sur">Prices +35%</div>
+        </div>
+        <div class="screen" id="screen" aria-live="polite">Choose an item.</div>
+        <div class="card" id="card">
+          <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 9a8 8 0 0 1 0 12M14 6a12 12 0 0 1 0 18M19 3a16 16 0 0 1 0 24"/></svg>
+          <span>Tap card or phone</span>
+        </div>
+        <div class="sticker">The louder the city, the higher the price. Every purchase is added to your sensory profile.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="veil" id="veil"></div>
+
+<section class="detail" id="detail" role="dialog" aria-modal="true" aria-labelledby="dName">
+  <button class="close" data-close aria-label="Close">×</button>
+  <div class="hero" id="dHero"></div>
+  <div class="info">
+    <div class="dir" id="dDir"></div>
+    <h2 id="dName"></h2>
+    <p class="what" id="dWhat"></p>
+    <div class="mat" id="dMat"></div>
+    <div class="price" id="dPrice"></div>
+    <button class="buy" id="buy"><span>Buy now</span><b id="buyPrice"></b></button>
+  </div>
+</section>
+
+<section class="slip" id="slip" role="dialog" aria-modal="true" aria-label="Receipt">
+  <div class="receipt" id="receipt"></div>
+  <div class="row">
+    <button class="btn" id="again">Buy something else</button>
+  </div>
+</section>
+
+<script>
+const P = [
+  {code:"A1", dir:"down", name:"Peak Plugs", price:3.50, what:"Earplugs that cut sudden loud noises but let voices through.", mat:"Agar and seaweed bioplastic",
+   q:"What are you trying not to hear?"},
+  {code:"A2", dir:"down", name:"Scent Filter Clip", price:3.00, what:"A nose clip that filters out strong smells.", mat:"Seaweed bioplastic, coconut-shell carbon",
+   q:"What are you trying not to smell?"},
+  {code:"A3", dir:"down", name:"Crowd Husk", price:5.50, what:"Two soft petals beside the eyes that hide the crowd around you.", mat:"Seaweed bioplastic",
+   q:"Who are you trying not to see?"},
+  {code:"A4", dir:"down", name:"Grounding Stones", price:4.00, what:"Cool stones to hold when everything feels too close.", mat:"Agar bioplastic, sea stone",
+   q:"What are you holding on to instead?"},
+  {code:"B1", dir:"up", name:"Daylight Lens", price:5.00, what:"A lens that helps your eyes meet bright daylight gently.", mat:"Photochromic lens, chitosan stem",
+   q:"When did you last look up without a reason?"},
+  {code:"B2", dir:"up", name:"Sun Patch", price:2.00, what:"A clear patch for your hand that turns gold in sunlight.", mat:"Bacterial cellulose",
+   q:"Why do you need a patch to tell you the sun is out?"},
+  {code:"B3", dir:"up", name:"Touch Tips", price:3.00, what:"Fingertip caps that make every surface feel new.", mat:"Bacterial cellulose",
+   q:"What did you last touch on purpose?"}
+];
+const byCode = Object.fromEntries(P.map(p => [p.code, p]));
+const $ = id => document.getElementById(id);
+const money = n => "$" + n.toFixed(2);
+const img = c => `<img src="products/${c}.jpg" alt="" onerror="this.remove()">`;
+
+/* overload meter */
+let level = 87, current = null, paid = null, sold = 1283;
+const surcharge = () => Math.max(0, Math.round((level - 40) * 3.2 / 5) * 5);
+const cost = p => p.price * (1 + surcharge() / 100);
+for (let i = 0; i < 20; i++){ $("bars").appendChild(document.createElement("i")); $("bigBars").appendChild(document.createElement("i")); }
+function drawMeter(){
+  const hot = level >= 85;
+  $("num").textContent = level + "%";
+  $("num").classList.toggle("hot", hot);
+  [...$("bars").children].forEach((b, i) => { b.className = (i < Math.round(level / 5) ? "on" : "") + (hot ? " hot" : ""); });
+  $("sur").textContent = `Prices +${surcharge()}%`;
+  $("bigNum").textContent = level + "%"; $("bigSur").textContent = `+${surcharge()}%`;
+  [...$("bigBars").children].forEach((b, i) => { b.className = (i < Math.round(level / 5) ? "on hot" : ""); });
+  document.querySelectorAll(".pr").forEach(el => {
+    const v = money(cost(byCode[el.dataset.c]));
+    if (el.textContent && el.textContent !== v){
+      const up = parseFloat(v.slice(1)) > parseFloat(el.textContent.slice(1));
+      el.classList.remove("up","down"); void el.offsetWidth; el.classList.add(up ? "up" : "down");
+    }
+    el.textContent = v;
+  });
+  if (current && $("detail").classList.contains("open")) drawPrice();
+}
+function tick(){
+  let step = Math.round(Math.random() * 14 - 7);
+  if (Math.random() < .15) step = (Math.random() < .5 ? -1 : 1) * (10 + Math.round(Math.random() * 10));
+  level = Math.max(48, Math.min(99, level + step));
+  drawMeter();
+}
+
+/* shelves */
+for (const p of P){
+  const b = document.createElement("button");
+  b.className = "cell"; b.setAttribute("aria-label", `${p.code} ${p.name}`);
+  b.innerHTML = `<div class="window">${img(p.code)}</div><div class="coil"></div>
+    <div class="tag"><span>${p.code}</span><span class="pr" data-c="${p.code}"></span></div><div class="name">${p.name}</div>`;
+  b.onclick = () => open(p);
+  $(p.code[0] === "A" ? "rowA" : "rowB").appendChild(b);
+}
+{
+  const e = document.createElement("button");
+  e.className = "cell empty"; e.setAttribute("aria-label", "B4 Quiet, sold out");
+  e.innerHTML = `<div class="window"></div><div class="coil"></div><div class="tag"><span>B4</span><span>Sold out</span></div><div class="name">Quiet</div>`;
+  e.onclick = () => say("B4 Quiet<br>Sold out at this station.<br>Restock date: unknown.");
+  $("rowB").appendChild(e);
+}
+drawMeter(); setInterval(tick, 900);
+
+function say(t){ $("screen").innerHTML = t; }
+
+/* pages */
+$("enter").onclick = () => { $("introPage").classList.remove("on"); $("machinePage").classList.add("on"); };
+
+/* detail */
+function open(p){
+  current = p;
+  $("dHero").innerHTML = img(p.code);
+  $("dDir").innerHTML = `<i style="background:var(--${p.dir})"></i>${p.dir === "down" ? "Turns the city down" : "Turns the city up"}`;
+  $("dName").textContent = p.name;
+  $("dWhat").textContent = p.what;
+  $("dMat").textContent = "Made of " + p.mat.toLowerCase() + ".";
+  drawPrice();
+  $("veil").classList.add("open"); $("detail").classList.add("open");
+  say(`${p.code} ${p.name}<br>${money(cost(p))}`);
+}
+function drawPrice(){
+  const p = current;
+  $("dPrice").innerHTML = `<small>Base ${money(p.price)} · overload surcharge +${surcharge()}% at ${level}%</small>`;
+  $("buyPrice").textContent = money(cost(p));
+}
+function closeAll(){ $("veil").classList.remove("open"); $("detail").classList.remove("open"); $("slip").classList.remove("open"); }
+document.querySelectorAll("[data-close]").forEach(b => b.onclick = closeAll);
+$("veil").onclick = closeAll;
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); });
+
+/* buy → receipt */
+$("buy").onclick = () => {
+  paid = {p: current, level, sur: surcharge(), total: cost(current)};
+  sold++;
+  $("detail").classList.remove("open");
+  say(`Approved.<br>${paid.p.name} · ${money(paid.total)}`);
+  printReceipt();
+};
+$("again").onclick = closeAll;
+
+function printReceipt(){
+  const {p, level: lv, sur, total} = paid;
+  const d = new Date(); d.setFullYear(2029);
+  const date = d.toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"}).toUpperCase();
+  const time = d.toLocaleTimeString("en-US", {hour:"2-digit", minute:"2-digit", hour12:false});
+  const filled = Math.round(lv / 10);
+  $("receipt").innerHTML = `
+    <div class="t">Sensory Dispensary</div>
+    <div class="c">Machine SD-014 · Platform level</div>
+    <div class="c">${date} ${time}</div>
+    <hr>
+    <div class="r"><span>${p.code} ${p.name.toUpperCase()}</span><span>${money(p.price)}</span></div>
+    <div class="r"><span>OVERLOAD SURCHARGE +${sur}%</span><span>${money(total - p.price)}</span></div>
+    <div class="r b"><span>TOTAL</span><span>${money(total)}</span></div>
+    <hr>
+    <div class="r"><span>OVERLOAD AT PURCHASE</span><span>${lv}%</span></div>
+    <div class="meterline">${Array.from({length:10},(_,i)=>`<i class="${i<filled?"f":""}"></i>`).join("")}</div>
+    <div class="r"><span>SOLD HERE TODAY</span><span>${sold.toLocaleString("en-US")}</span></div>
+    <div class="r"><span>B4 QUIET</span><span>SOLD OUT</span></div>
+    <hr>
+    <div>Added to your sensory profile.</div>
+    <div>You paid more because the city was louder.</div>
+    <hr>
+    <div class="q">${p.q}</div>
+    <div class="blank"></div><div class="blank"></div>
+    <div class="barcode"></div>
+    <div class="c">KEEP THIS RECEIPT</div>`;
+  $("veil").classList.add("open"); $("slip").classList.add("open");
+  $("again").focus();
+}
+</script>
+</body>
+</html>
